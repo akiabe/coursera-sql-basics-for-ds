@@ -1,0 +1,138 @@
+1. Filtering
+
+   ex1: Filtering productName 'Tofu'
+   <input>
+   SELECT ProductName
+          ,UnitPrice
+          ,SupplierID
+   FROM   Products
+   WHERE  ProductName = 'Tofu';
+   
+   <output>
+   ProductName  UnitPrice  SupplierID
+      Tofu        23.25        6
+   
+   ex2: Filtering UnitPrice >= 75
+   <input>
+   SELECT ProductName
+          ,UnitPrice
+          ,SupplierID
+   FROM   Products
+   WHERE  UnitPrice >= 75;
+   
+   <output>
+   ProductName     UnitPrice  SupplierID
+    Kobe Gyu          97         4
+    Marmalade         81         8
+    Rostbratwurst     123.8      12
+    Playe             263.5      18
+    
+   ex3: Filtering non matches to ProductName 'Alice Mutton'
+   <input>
+   SELECT ProductName
+          ,UnitPrice
+          ,SupplierID
+   FROM   Products
+   WHERE  ProductName <>'Alice Mutton';
+   
+   ex4: Filtering UnitsInStock value between 15 to 80
+   <input>
+   SELECT ProductName
+          ,UnitPrice
+          ,SupplierID
+   FROM   Products
+   WHERE  UnitsInStock BETWEEN 15 AND 80;   
+
+   <output>
+   ProductName     UnitPrice  SupplierID
+    Chai              18          4
+    Chang             19          8
+    Konbu              6         12
+    Tofu             23.5        18
+    
+   ex5: Filtering no value in ProductName
+   <input>
+   SELECT ProductName
+          ,UnitPrice
+          ,SupplierID
+          ,UnitsInStock
+   FROM   Products
+   WHERE  ProductName IS NULL;   
+
+   <output>
+   UnitPrice  SupplierID   UnitsInStock
+     18          4             7
+     19          8             8
+      6         12            10
+    23.5        18            11
+
+2. Advanced filtering: IN, OR, NOT
+   IN: Specifies a range of condition(similar to BETWEEN)
+
+   ex: Filtering SupplierID to 9, 10, 11
+   <input>
+   SELECT ProductID
+          ,UnitPrice
+          ,SupplierID
+   FROM   Products
+   WHERE  SupplierID IN (9, 10, 11);   
+
+   <output>
+   ProductID   UnitPrice  SupplierID
+     22           21          9
+     23            9          9
+     24           4.5        10
+     27          43.9        11
+   
+   OR: Specifies any rows matching the conditions
+   
+   ex: Filtering ProductName 'Tofu' or 'Konbu'
+   <input>
+   SELECT 
+   ProductName
+   ,ProductID
+   ,UnitPrice
+   ,SupplierID
+   ,ProductName
+   FROM   Products
+   WHERE  ProductName = 'Tofu' OR 'Konbu';   
+   
+   <output>
+   ProductID   UnitPrice  SupplierID  ProductName
+     22           21          9         Tofu
+   
+   OR with AND
+   
+   ex1: Filtering SupplierID 9 or 11 and UnitPrice > 15
+   <input>
+   SELECT ProductID
+          ,UnitPrice
+          ,SupplierID
+   FROM   Products
+   WHERE  (SupplierID = 9 OR SupplierID = 11)
+   AND    UnitPrice >15;
+   
+   <output>
+   ProductID  UnitPrice   SupplierID
+      22         21           9
+      26         31.23        11
+      27         43.9         11
+   
+   NOT: Exclude specific condition data
+   
+   ex: Exclude any data of City 'London' and 'Seattle'
+   <input>
+   SELECT *
+   FROM Emplyees
+   WHERE NOT City = 'London' AND NOT City = 'Seattle';
+    
+3. Using wildcards
+   
+   
+   
+   
+   
+4. Sorting
+5. Math operation
+6. Aggregate
+7. Grouping
