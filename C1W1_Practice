@@ -1,0 +1,23 @@
+1. Retrive all data drom the Tracks table
+
+   SELECT *
+   FROM Tracks;
+
+2. Return the PlaylistId, and Name from the Playlists table
+
+   SELECT PlaylistId
+          ,Name
+   FROM Playlists;
+
+3. Return the CustomerId, InvoiceDate, and BillingCity from the Invoices table
+   
+   SELECT CustomerId
+          ,InvoiceData
+          ,BillingCity
+   FROM Invoices;
+
+4. Select all the columns from the PlaylistTrack table and limit the results to 10 records
+   
+   SELECT *
+   FROM PlaylistTrack
+   LIMIT 10;
