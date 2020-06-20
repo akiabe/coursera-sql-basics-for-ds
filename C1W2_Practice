@@ -1,0 +1,371 @@
+1. Excluding $0.00, what is the minimum bi-weekly high rate of pay?
+   
+   <input>
+   SELECT MIN(Biweekly_high_Rate)
+   FROM   salary_range_by_job_classification
+   WHERE  biweekly_high_rate <> '$0.00'
+   
+   <output>
+   +-------------------------+
+   | min(Biweekly_high_Rate) |
+   +-------------------------+
+   | $100.00                 |
+   +-------------------------+
+   
+2. What is the maximum biweekly high rate of pay?
+   
+   <input>
+   SELECT MAX(Biweekly_high_Rate) 
+   FROM   salary_range_by_job_classification
+   
+   <output>
+   +-------------------------+
+   | Max(Biweekly_high_Rate) |
+   +-------------------------+
+   | $9726.38                |
+   +-------------------------+
+   
+3. What is the pay type for all the job codes that start with '03'? 
+   
+   <input>
+   SELECT job_code
+          ,pay_type
+   FROM   salary_range_by_job_classification
+   WHERE  job_code like '03%'
+   
+   <output>
+   +----------+----------+
+   | Job_Code | Pay_Type |
+   +----------+----------+
+   | 0380     | B        |
+   | 0381     | B        |
+   | 0382     | B        |
+   | 0390     | B        |
+   | 0395     | B        |
+   | 0380     | B        |
+   | 0381     | B        |
+   | 0382     | B        |
+   +----------+----------+
+
+4. Run a query to find the Effective Date (eff_date) or Salary End Date (sal_end_date) for grade Q90H0?
+   
+   <input>
+   SELECT grade
+          ,eff_date
+          ,sal_end_date
+   FROM   salary_range_by_job_classification
+   WHERE  grade = 'Q90H0'
+   
+   <output>
+   +-------+------------------------+------------------------+
+   | Grade | Eff_Date               | Sal_End_Date           |
+   +-------+------------------------+------------------------+
+   | Q90H0 | 12/26/2009 12:00:00 AM | 06/30/2010 12:00:00 AM |
+   +-------+------------------------+------------------------+
+   
+5. Sort the Biweekly low rate in ascending order. 
+   
+   <input>
+   Select   Biweekly_Low_Rate
+   FROM     salary_range_by_job_classification
+   ORDER BY Biweekly_Low_Rate ASC
+   
+   <output>
+   +-------------------+
+   | Biweekly_Low_Rate |
+   +-------------------+
+   | $0.00             |
+   | $0.00             |
+   | $0.00             |
+   | $0.00             |
+   | $100.00           |
+   | $100.00           |
+   | $10059.00         |
+   | $10376.00         |
+   | $1052.00          |
+   | $10630.00         |
+   | $10843.00         |
+   | $1088.00          |
+   +-------------------+   
+   
+6. What Step are Job Codes 0110-0400? 
+   
+   <input>
+   SELECT Job_Code
+          ,Salary_setID
+          ,Step
+   FROM   salary_range_by_job_classification
+   WHERE  Job_Code between "0110" and "0400"
+   
+   <output>
+   +----------+--------------+------+
+   | Job_Code | Salary_SetID | Step |
+   +----------+--------------+------+
+   | 0110     | COMMN        | 1    |
+   | 0111     | COMMN        | 1    |
+   | 0112     | COMMN        | 1    |
+   | 0114     | COMMN        | 1    |
+   | 0115     | COMMN        | 1    |
+   | 0116     | COMMN        | 1    |
+   | 0118     | COMMN        | 1    |
+   | 0119     | COMMN        | 1    |
+   | 0150     | COMMN        | 1    |
+   | 0380     | COMMN        | 1    |
+   | 0381     | COMMN        | 1    |
+   | 0382     | COMMN        | 1    |
+   +----------+--------------+------+
+  
+7. What is the Biweekly High Rate minus the Biweekly Low Rate for job Code 0170?
+   
+   <input>
+   SELECT Job_code
+          ,Biweekly_high_rate
+          ,Biweekly_low_rate
+          ,(biweekly_high_rate - Biweekly_low_rate) AS calc
+   FROM salary_range_by_job_classification
+   WHERE Job_code = '0170'
+  
+   <output>
+   +----------+--------------------+-------------------+------+
+   | Job_Code | Biweekly_High_Rate | Biweekly_Low_Rate | calc |
+   +----------+--------------------+-------------------+------+
+   | 0170     | $4142.00           | $4142.00          |    0 |
+   +----------+--------------------+-------------------+------+
+
+8. What is the Extended Step for Pay Types M, H, and D?
+   
+   <input>
+   Select  Extended_step
+           ,Pay_Type
+   FROM    salary_range_by_job_classification
+   WHERE   Pay_Type IN ('M', 'H', 'D');
+   
+   <output>
+   +---------------+----------+
+   | Extended_Step | Pay_Type |
+   +---------------+----------+
+   | 0             | D        |
+   | 0             | D        |
+   | 0             | M        |
+   | 0             | D        |
+   | 0             | D        |
+   | 0             | M        |
+   | 0             | H        |
+   | 0             | H        |
+   +---------------+----------+
+    
+9. What is the step for Union Code 990 and a Set ID of SFMTA or COMMN?
+   
+   <input>
+   SELECT Union_code
+          ,SetID
+          ,Step
+   FROM   salary_range_by_job_classification
+   WHERE  Union_code = 990 AND (SetID = 'SFMTA' OR SetID = 'COMMN')
+   
+   <output>
+   +------------+-------+------+
+   | Union_Code | SetID | Step |
+   +------------+-------+------+
+   | 990        | COMMN | 1    |
+   +------------+-------+------+
+
+10. Find all the tracks that have a length of 5,000,000 milliseconds or more
+    
+    <input>
+    SELECT COUNT(TrackId)
+    FROM   TRACKS
+    WHERE  Milliseconds >= 5000000
+    
+    <output>
+    +----------------+
+    | COUNT(TrackId) |
+    +----------------+
+    |              2 |
+    +----------------+
+    
+11. Find all the invoices whose total is between $5 and $15 dollars
+    
+    <input>
+    SELECT InvoiceID
+           ,Total
+    FROM   Invoices
+    WHERE  Total > 5 AND Total < 15
+
+   <output>
+   +-----------+-------+
+   | InvoiceId | Total |
+   +-----------+-------+
+   |         3 |  5.94 |
+   |         4 |  8.91 |
+   |         5 | 13.86 |
+   |        10 |  5.94 |
+   |        11 |  8.91 |
+   |        12 | 13.86 |
+   |        17 |  5.94 |
+   |        18 |  8.91 |
+   |        19 | 13.86 |
+   |        24 |  5.94 |
+   +-----------+-------+
+
+12. Find all the customers from the following States: RJ, DF, AB, BC, CA, WA, NY.
+
+    <input>
+    SELECT FirstName
+       ,   LastName
+           ,Company, State
+    FROM Customers
+    WHERE State IN ('RJ','DF','AB','BC','CA','WA','NY')
+
+    <output>
+    +-----------+----------+-----------------------+-------+
+    | FirstName | LastName | Company               | State |
+    +-----------+----------+-----------------------+-------+
+    | Roberto   | Almeida  | Riotur                | RJ    |
+    | Fernanda  | Ramos    | None                  | DF    |
+    | Mark      | Philips  | Telus                 | AB    |
+    | Jennifer  | Peterson | Rogers Canada         | BC    |
+    | Frank     | Harris   | Google Inc.           | CA    |
+    | Jack      | Smith    | Microsoft Corporation | WA    |
+    | Michelle  | Brooks   | None                  | NY    |
+    | Tim       | Goyer    | Apple Inc.            | CA    |
+    | Dan       | Miller   | None                  | CA    |
+    +-----------+----------+-----------------------+-------+
+
+13. Find all the invoices for customer 56 and 58 where the total was between $1.00 and $5.00.
+    
+<input>
+SELECT CustomerId
+       ,InvoiceId
+       ,Total
+       ,InvoiceDate
+FROM   Invoices
+WHERE  CustomerID IN (56,58) AND Total  BETWEEN 1 AND 5
+
+<output>
++------------+-----------+-------+---------------------+
+| CustomerId | InvoiceId | Total | InvoiceDate         |
++------------+-----------+-------+---------------------+
+|         56 |       119 |  1.98 | 2010-06-12 00:00:00 |
+|         56 |       142 |  3.96 | 2010-09-14 00:00:00 |
+|         56 |       337 |  1.98 | 2013-01-28 00:00:00 |
+|         58 |       120 |  1.98 | 2010-06-12 00:00:00 |
+|         58 |       315 |  1.98 | 2012-10-27 00:00:00 |
+|         58 |       338 |  3.96 | 2013-01-29 00:00:00 |
+|         58 |       412 |  1.99 | 2013-12-22 00:00:00 |
++------------+-----------+-------+---------------------+
+
+14. Find all the tracks whose name starts with 'All'.
+
+<input>
+SELECT TrackId
+       ,Name
+FROM   Tracks
+WHERE  Name LIKE 'All%'
+
+<output>
++---------+----------------------------------------+
+| TrackId | Name                                   |
++---------+----------------------------------------+
+|      38 | All I Really Want                      |
+|     134 | All For You                            |
+|     385 | All Star                               |
+|    1009 | All My Life                            |
+|    1608 | All My Love                            |
+|    1892 | All Within My Hands                    |
+|    2192 | All or None                            |
+|    2274 | All Dead, All Dead                     |
+|    2888 | All the Best Cowboys Have Daddy Issues |
+|    2969 | All Because Of You                     |
++---------+----------------------------------------+
+
+15. Find all the customer emails that start with "J" and are from gmail.com.
+
+<input>
+SELECT CustomerId
+       ,Email
+FROM   Customers
+WHERE  Email LIKE "J%@gmail.com"
+
+<output>
++------------+---------------------+
+| CustomerId | Email               |
++------------+---------------------+
+|         28 | jubarnett@gmail.com |
++------------+---------------------+
+
+16. Find all the invoices from the billing city Brasília, Edmonton, and Vancouver and sort in descending order by invoice ID.
+
+<input>
+SELECT InvoiceId
+       ,BillingCity
+       ,Total
+FROM   Invoices
+WHERE  BillingCity IN ('Brasilia','Edmonton','Vancouver')
+ORDER BY InvoiceId DESC
+
+<output>
++-----------+-------------+-------+
+| InvoiceId | BillingCity | Total |
++-----------+-------------+-------+
+|       362 | Edmonton    | 13.86 |
+|       351 | Edmonton    |  1.98 |
+|       328 | Vancouver   |  0.99 |
+|       276 | Vancouver   |  5.94 |
+|       254 | Vancouver   |  3.96 |
+|       231 | Vancouver   |  1.98 |
+|       230 | Edmonton    |  0.99 |
+|       178 | Edmonton    |  5.94 |
+|       156 | Edmonton    |  3.96 |
+|       133 | Edmonton    |  1.98 |
++-----------+-------------+-------+
+
+17. Show the number of orders placed by each customer and sort the result by the number of orders in descending order.
+
+<input>
+SELECT   CustomerId
+         ,COUNT(*) AS Orders
+FROM     Invoices
+GROUP BY CustomerId
+ORDER BY Orders DESC
+
+<output>
++------------+--------+
+| CustomerId | Orders |
++------------+--------+
+|          1 |      7 |
+|          2 |      7 |
+|          3 |      7 |
+|          4 |      7 |
+|          5 |      7 |
+|          6 |      7 |
+|          7 |      7 |
+|          8 |      7 |
+|          9 |      7 |
+|         10 |      7 |
++------------+--------+
+
+18. Find the albums with 12 or more tracks.
+
+<input>
+SELECT   AlbumId
+         ,Count(*) AS Ntracks
+FROM     Tracks
+GROUP BY AlbumId
+HAVING COUNT (*) >= 12
+
+<output>
++---------+---------+
+| AlbumId | Ntracks |
++---------+---------+
+|       5 |      15 |
+|       6 |      13 |
+|       7 |      12 |
+|       8 |      14 |
+|      10 |      14 |
+|      11 |      12 |
+|      12 |      12 |
+|      14 |      13 |
+|      18 |      17 |
+|      21 |      18 |
++---------+---------+
