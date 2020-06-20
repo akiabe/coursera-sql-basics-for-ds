@@ -127,12 +127,161 @@
    WHERE NOT City = 'London' AND NOT City = 'Seattle';
     
 3. Using wildcards
+
+   ex:
+   '%Pizza' : grabs anything ending with the word pizza 
+   'Pizza%' : grabs anything after the word pizza
+   '%Pizza%' : grabs anything before and after the word pizza
    
+   'S%E' : grabs anything that starts with "S" and ends with "E"
+   't%@gmail.com' : grabs gmail address that starts with "t"
+    
+   %wildcard will not match NULLS
    
+   ex2: matchi a single character
+   <input>
+   WHERE size LIKE '_pizza' / WHERE size LIKE '%pizza'
    
-   
+   <output>
+   spizza
+   mpizza
    
 4. Sorting
+   
+   ex:
+   <input>
+   SELECT    something
+   FROM      database  
+   ORDER BY  characteristics
+   
+   DESC -- descending order
+   ASC  -- ascending order
+   
 5. Math operation
+   
+   ex1: calculate Total_Order_Cost multiply by the UnitOnOrder to UnitPrice
+   <input>
+   SELECT ProductID
+          ,UnitOnOrder
+          ,UnitPrice
+          'UnitOnOrder * UnitPrices AS Total_Order_Cost
+   FROM   Products
+   
+   <output>
+   ProductID  UnitOnOrder  UnitPrice  Total_Order_Cost
+      1           2           $5             $10
+      2           3           $6             $18
+      3           4           $7             $28
+   
+   ex2:
+   <input>
+   SELECT ProductID
+          ,Quantity
+          ,UnitPrice
+          ,Discount
+          '(UnitOnOrder - Discount) / Quantity AS Total_Cost
+   FROM   OrderDetails;
+   
+   <output>
+   ProductID  Quantity  UnitPrice  Discount  Total_Cost
+      1           2       $15         $5        $10
+      2           3       $24         $6        $18
+      3           4       $35         $7        $28
+  
 6. Aggregate
+   
+   Aggregate function:
+   AVG(), COUNT(), MIN(), MAX(), SUM()
+   
+   AVG()
+   ex: compute UnitPrice average
+   <input>
+   SELECT  AVG(UnitPrice) AS avg_price
+   FROM    products
+   
+   COUNT()
+   ex1: count all the rows in a table containing values or NULL values
+   <input>
+   SELECT COUNT(*) AS total_customer
+   FROM  Customers
+   
+   ex2: count all the rows in a specific column ignoring NULL values
+   <input>
+   SELECT COUNT(CustomerID) AS total_customer
+   FROM   Customers
+   
+   MAX(), MIN()
+   ex1:
+   <input>
+   SELECT MAX(UnitPrice) AS max_product_price
+   FROM Products
+   
+   <output>
+   max_product_price
+          $100
+   
+   ex2:
+   <input>
+   SELECT MAX(UnitPrice) AS max_product_price
+         ,MIN(UnitPrice) AS min_product_price
+   FROM Products
+   
+   <output>
+   max_product_price   min_product_price
+         $100                 $10
+   
+   SUM()
+   ex1:
+   <input>
+   SELECT SUM(UnitPrice) AS max_product_price
+   FROM Products
+   
+   <output>
+   max_product_price
+          $500
+   
+   ex2:
+   <input>
+   SELECT SUM(UnitPrice*UnitsInStock) AS total_price
+          ,SupplierID
+   FROM Products
+   WHERE SupplierID = 23;
+   
+   <output>
+   total_price  SupplierID
+      $300          23
+   
+   DISTINCT()
+   ex:
+   <input> get CustomerID from Customers table w/o duplicate
+   SELECT COUNT(DISTINCT CustomerID)
+   FROM  Customers
+   
 7. Grouping
+   
+   ex1: counts CustomersID after group on region rather than counting the whole table
+   <input>
+   SELECT Region
+          ,COUNT(CustomerID) AS total_customers
+   FROM Customers
+   GROUP BY Region:
+   
+   <output>
+   Region  total_customers
+    USA          200
+    UK           100
+    JP            50
+   
+   ex2: count of orders for customers who've had more than two orders
+   <input>
+   SELECT CustomerID
+          ,COUNT (*) AS orders
+   FROM Orders
+   GROUP BY CustomerID
+   HAVING COUNT (*) >= 2;
+   
+   <output>
+   CustomerID  Orders
+      54         5
+      63         5
+      32         8
