@@ -1,0 +1,68 @@
+1. Subqueries
+   Queries embedded into other queries
+   
+   ex1 : need to know the region each customers is
+       from who has had an order with freight over 100
+   
+   SELECT  CustomerID
+          ,CompanyName
+          ,Region
+   FROM   Customers
+   WHERE  customerID  in (SELECT        <- subqueries
+   customerID
+          FROM  Orders
+          WHERE Freight > 100);
+   
+   ex2 : 
+   
+   -- 3) customer information for those orders
+   SELECT  Customer_name
+          ,Customer_contact
+   FROM    Customers
+   WHERE   cust_id IN
+        -- 2) customer id's for those orders
+        SELECT  customer_id
+        FROM    Orders
+        WHERE   order_number IN (SELECT order_number
+        -- 1) order numbers for toothbrush
+            FROM   OrderItems
+                WHERE   prod_name = 'Toothbrush');
+   
+   ex3 :
+   
+   SELECT COUNT (*) AS orders
+   FROM   Orders
+   WHERE  customer_id = '143569';
+   
+   SELECT customer_name
+          ,customer_state
+          (SELECT COUNT (*) AS orders
+          FROM    Orders
+          WHERE   Orders.customer_id = Customer.customer_id) AS orders
+   FROM   customers
+   ORDER BY  Customer_name
+    
+2. Cartesian joins
+   each row from the first table joins with all the rows of another table
+   
+   ex :
+
+   SELECT  product_name
+           ,unit_price
+           ,company_name
+   FROM    suppliers CROSS JOIN products;
+     
+3. Inner joins
+   select records that have matching values in both tables
+   
+   ex :
+   
+   SELECT  suppliers.CompanyName
+           ,ProductName
+           ,UnitPrice
+   FROM    Suppliers INNER JOIN Products
+   ON  Suppliers.supplierid = Products.supplierid
+      
+4. Aliases and self joins
+5. Advanced joins: Left, Right, and Full outer joins
+6. Unions
