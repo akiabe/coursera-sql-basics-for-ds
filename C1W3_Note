@@ -2,17 +2,36 @@
    Queries embedded into other queries
    
    ex1 : need to know the region each customers is
-       from who has had an order with freight over 100
+         from who has had an order with freight over 100
    
+   two diffrent table : Customers(CustomerID, CompanyName, Region)
+                        ,Orders(CustomerID, Freight)
+   
+   SELECT DISTINCT customerID
+   FROM   Orders
+   WHERE  Freight > 100
+   
+   SELECT CustomerID
+          ,CompanyName
+          ,Region
+   FROM   Customers
+   WHERE  customerID IN ('RICSU'
+          ,'ERNSH'
+          ,'WARTH'
+          ,'GODOS' ...)
+   
+   <using subqurries>
+   --Second, expand other data
    SELECT  CustomerID
           ,CompanyName
           ,Region
    FROM   Customers
-   WHERE  customerID  in (SELECT        <- subqueries
+   --First, filtering customerID by freight over 100
+   WHERE  customerID  in (SELECT
    customerID
           FROM  Orders
           WHERE Freight > 100);
-   
+  
    ex2 : 
    
    -- 3) customer information for those orders
@@ -45,7 +64,7 @@
 2. Cartesian joins
    each row from the first table joins with all the rows of another table
    
-   ex :
+   ex : table1 is suppliers and table2 is products
 
    SELECT  product_name
            ,unit_price
@@ -55,14 +74,73 @@
 3. Inner joins
    select records that have matching values in both tables
    
-   ex :
+   ex : table1 is suppliers and table2 is productsg
    
    SELECT  suppliers.CompanyName
            ,ProductName
            ,UnitPrice
    FROM    Suppliers INNER JOIN Products
-   ON  Suppliers.supplierid = Products.supplierid
+   ON      Suppliers.supplierid = Products.supplierid
       
 4. Aliases and self joins
+   Aliases: 
+   
+   SELECT vendor_name
+          ,product_name
+          ,product_price
+   FROM   Vendors, Product
+   WHERE  Vendors.vendor_id = Products.vendor_id:
+   
+   <Using Alias>
+   SELECT vendor_name
+          ,product_name
+          ,product_price
+   FROM   Vendors AS v, Product AS p
+   WHERE  v.vendor_id = p.vendor_id:
+   
+   Self joins:
+   
+   ex: match customers that are from the same city
+   
+   SELECT    A.CustomerName AS CustomerName1
+             ,B.CustomerName AS CustomerName2
+             ,A.City
+   FROM      Customers A, Customers B
+   WHERE     A.CustomerID = B.CustomerID
+   AND       A.City = B.City
+   ORDER BY  A.City;
+   
 5. Advanced joins: Left, Right, and Full outer joins
+   Left join:
+   returns all records from the left table and the matched records from the right table
+   
+   SELECT    C.CustomerName
+             ,O.OrderID             
+   FROM      Customer C   
+   LEFT JOIN Orders O ON C.CustomerID = O.CustomerID
+   ORDER BY  C.CustomerName;
+   
+   Right join:
+   returns all records from the right table and the matched records from the left table
+   
+   SELECT     Orders.OrderID
+             ,Employees.LastName
+             ,Employees.FirstName
+   FROM      Orders
+   RIGHT JOIN Employees ON Orders.EmployeeID = Employees.EmplyoeeID
+   ORDER BY  Orders.OrderID;
+   
 6. Unions
+   ex: Which German cities have suppliers
+   
+   SELECT   City
+            ,Country
+   FROM     Customers
+   WHERE    Country='Germany'
+   UNION
+   SELECT   City
+            ,Country
+   FROM     Suppliers
+   WHERE    Country='Germany'
+   ORDER BY City;
+   
