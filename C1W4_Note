@@ -1,0 +1,205 @@
+1. Working with text strings
+   - Concatenations
+     e.g. concatenate company name and contact name
+     
+     >>
+     SELECT  CompanyName
+             ,ContactName
+             ,CompanyName ||'('|| ContactName||')'
+     FROM    customers
+     
+     >>
+     CompanyName    ContactName    CompanyName||'('|| ContactName||')'
+   1   Alfreds         Maria                 Alfreds(Maria)
+   2     Tom            Rucy                    Tom(Rucy)
+   
+   - Trimming strings
+     Trims the leading or  trailing space from a string
+     TRIM
+     RTRIM (Trim the right)
+     LTRIM (Trim the left)
+     
+     >>
+     SELECT TRIM("  You the
+     best.  ") AS TrimmedString;
+   
+   - Substring
+     Returns the specified number of characters from a particular position of a given string
+     
+     SUBSTR(string name, string position, number of characters to be returned);
+     
+     >>
+     SELECT first_name
+            ,SUBSTR(first_name, 2, 3)
+     FROM   employees
+     WHERE  department_id=60;
+     
+     >>
+     First_name     substr(first_name, 2, 3)
+      Alexander             lex
+      Bruce                 ruc
+      David                 avi
+      Valli                 all
+   
+   - Upper and Lower
+   
+     Change upper case
+     >>
+     SELECT  UPPER(column_name) FROM table_name;
+     
+     Change lower case
+     >>
+     SELECT  LOWER(column_name) FROM table_name;
+     
+     Change ucase
+     >>
+     SELECT  UCASE(column_name) FROM table_name;
+
+2. Working with data and time strings
+   - Date formats
+      Date:       YYYY-MM-DD
+      Datetime:   YYYY-MM-DD HH:MI:SS  (HH: hours, MI: minutes, SS: seconds)
+      Time stamp: YYYY-MM-DD HH:MI:SS
+     
+     if data formats is datatime, you can't get value bellow query
+      >>
+      WHERE PurchaseDate='2016-12-12'
+     
+     >>
+     DATE(timestring, modifier, modifier...)
+     TIME(timestring, modifier, modifier...)
+     DATETIME(timestring, modifier, modifier...)
+     JULIADAY(timestring, modifier, modifier...)
+     STRFTIME(format, timestring, modifier, modifier...)
+     
+     timestrings:
+     YYYY-MM-DD
+     YYYY-MM-DD HH:MM
+     YYYY-MM-DD HH:MM:SS
+     YYYY-MM-DD HH:MM:SS.SSS
+     YYYY-MM-DDTHH:MM
+     ...
+     
+     modifier:
+     NNN days
+     NNN hours
+     NNN minutes
+     NNN months
+     NNN years
+     start of month
+     start of year
+     start of day
+     weekday N
+     ...
+     
+3. Data and time strings examples
+   - STRFTIME function (String format time function)
+     compute current date and use it to compare to a recorded date in your data
+     
+     >>
+     SELECT Birthdate
+            ,STRFTIME('%Y', Birthdate) AS Year
+            ,STRFTIME('%m', Birthdate) AS Month
+            ,STRFTIME('%d', Birthdate) AS Day
+     FROM   employees
+     
+     >>
+           Birthdate        Year    Month     Day
+     1962-02-18 00:00:00    1962     02       18
+     1958-03-12 00:00:00    1958     03       12     
+   
+   - Now function
+     combine several date and time functions together to manipulate data
+   
+     - Compute current date
+      >>
+      SELECT DATE('now')
+     
+     - Compute year, month and day for the current date
+      >>
+      SELECT STRFTIME('%Y %m %d', 'now')
+   
+     - Compute hour, minute and second and milliseconds from current datetime
+      >>
+      SELECT STRFTIME('%H %M %S %s', 'now')
+   
+     - Compute age using birthdate
+     >>
+     SELECT Birthdate
+            ,STRFTIME('%Y', Birthdate) AS Year
+            ,STRFTIME('%m', Birthdate) AS Month
+            ,STRFTIME('%d', Birthdate) AS Day
+            ,DATE(('now') - Birthdate) AS Age
+     FROM   employees
+     
+     >>
+           Birthdate        Year    Month     Day    Age
+     1962-02-18 00:00:00    1962     02       18      55
+     1958-12-08 00:00:00    1958     03       12      59
+   
+4. Case statements
+   >>
+   CASE
+   WHEN C1 THEN E1
+   WHEN C2 THEN E2
+   ...
+   ELSE [result else]
+   END
+   
+   >>
+   CASE input_expression
+       WHEN when_expression THEN result_expression[...n]
+       [ELSE else_result_expression]
+   END
+   
+   e.g.reclassify city
+   >>
+   SELECT  employeeid
+           ,firstname
+           ,lastname
+           ,city
+           ,CASE City
+                 WHEN 'Calgary' THEN 'Calgary'
+            ELSE 'Other'
+                 END calgary
+   FROM    Employees
+   ORDER BY LastName, FirstName;
+   
+   >>
+   employeeid    firstname   lastname       city       calgary
+   1              andrew      adams       edmonton      other
+   8              nancy       edwards     calgary       calgary
+   2              robert      king        lethbridge    other
+   
+   - Search case statement
+     >>
+     CASE WHEN Boolean_expression
+     THEN result_expression[...n]
+     [ ELSE else_result_expression]
+     END
+     
+     e.g.
+     >>
+     SELECT  trackid
+             ,name
+             ,bytes
+             ,CASE 
+                  WHEN bytes < 300000  THEN  'small'
+                  WHEN bytes >= 300001 AND bytes <=500000 THEN 'medium'
+                  WHEN bytes >= 500001 THEN 'large'
+              ELSE 'Other'
+                  END bytescategory
+     FROM tracks;
+     
+     >>
+     trackid          name             bytes    bytescategory
+     2461             E Uma            38747       small
+     3304             Commercial 1     38736       medium
+     ...
+    
+5. Views
+6. Data governance and profiling
+7. Using SQL for data science Pt.1
+8. Using SQL for data science Pt.2
+9. Additional SQL resources to explore
+   
