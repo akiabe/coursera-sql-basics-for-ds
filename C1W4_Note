@@ -198,8 +198,38 @@
      ...
     
 5. Views
+   - View
+     - add or remove columns w/o changing schema
+     - view will be removed after database connection has ended
+       
+       >>
+       CREATE VIEW my_view
+       AS
+       SELECT  r.regiondescription
+               ,t.terrirorydescription
+               ,e.Lastname
+               ,e.Firstname
+               ,e.Hiredate
+               ,e.Reportsto
+       FROM    Region r
+       INNER JOIN Territories t ON r.regionid = t.regionid
+       INNER JOIN Employeeterrirories et ON t.TerritoryID = et.TerritoryID
+       INNER JOIN Employees e ON et.employeeid = e.EmployeeID
+      
+      >>
+      SELECT    count(territorydescription)
+                ,Lastname
+                ,Firstname
+      FROM      my_view
+      GROUP BY  Lasename, Firstname;
+      
+      >>
+      count(territorydescription)   Lastname   Firstname
+                  3                   Fuller    Andrew
+                  7                   King      Robert
+                  
 6. Data governance and profiling
 7. Using SQL for data science Pt.1
 8. Using SQL for data science Pt.2
 9. Additional SQL resources to explore
-   
+  
